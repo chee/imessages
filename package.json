@@ -18,5 +18,8 @@
 	},
 	"directories": {
 		"bin": "./bin"
+	},
+	"yargs": {
+		"parse-numbers": false
 	}
 }
