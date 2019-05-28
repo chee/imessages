@@ -4,13 +4,14 @@ import path from "path"
 import Knex from "knex"
 import yargs from "yargs"
 
+// apple have made their own epoch, the first of jan 2001
 let applepoch = new Date("2001-01-01").getTime()
 
+// they save their dates in microseconds since that epoch, so we add their
+// epoch to the date and divide it by a million to make it like a unix date,
+// which is the number of seconds since 1970-01-01
 let convertAppleDateToIsoDate = date =>
 	new Date(applepoch + date / 1000000).toISOString()
-
-// let convertIsoDateToAppleDate = date =>
-// 	new Date(date - applepoch).getTime() * 1000000
 
 // The file is always in the same place, and while it would be good to be able
 // to take another database other than the live one (one you’ve backed up, or
