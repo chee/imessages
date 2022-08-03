@@ -8,7 +8,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],
-	"author": "chee <chee@snoot.club>",
+	"author": "chee <yay@chee.party>",
 	"license": "GPL-3.0+",
 	"dependencies": {
 		"esm": "*",
