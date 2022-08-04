@@ -1,4 +1,4 @@
-# @chee/imessages
+# imessages
 
 extract imessage chats to json :-)
 
@@ -6,7 +6,7 @@ extract imessage chats to json :-)
 ## Usage
 
 ```
-npm install -g @chee/imessages
+npm install -g imessages
 cp ~/Library/Messages/chat.db chat.db
 imessages list-handles ./chat.db // prints all the handles
 imessages extract ./chat.db +525588888888 Sofia chee > sofia.json
