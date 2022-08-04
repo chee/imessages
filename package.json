@@ -1,39 +1,39 @@
 {
-	"name": "@chee/imessages",
-	"version": "3.0.0",
-	"description": "extract chats from imessage",
-	"main": "index.js",
-	"type": "module",
-	"scripts": {
-		"start": "./index.js"
-	},
-	"engines": {
-		"node": "18"
-	},
-	"keywords": [
-		"imessage",
-		"extract",
-		"messages",
-		"app",
-		"apple",
-		"texts",
-		"backup",
-		"json"
-	],
-	"author": "chee <yay@chee.party>",
-	"license": "GPL-3.0+",
-	"dependencies": {
-		"better-sqlite3": "^7.6.2",
-		"knex": "^2.2.0",
-		"yargs": "^12.0.5"
-	},
-	"bin": {
-		"imessages": "./index.js"
-	},
-	"yargs": {
-		"parse-numbers": false
-	},
-	"volta": {
-		"node": "18.7.0"
-	}
+    "name": "imessages",
+    "version": "1.0.0",
+    "description": "extract chats from imessage",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+	"start": "./index.js"
+    },
+    "engines": {
+	"node": "18"
+    },
+    "keywords": [
+	"imessage",
+	"extract",
+	"messages",
+	"app",
+	"apple",
+	"texts",
+	"backup",
+	"json"
+    ],
+    "author": "chee <yay@chee.party>",
+    "license": "GPL-3.0+",
+    "dependencies": {
+	"better-sqlite3": "^7.6.2",
+	"knex": "^2.2.0",
+	"yargs": "^12.0.5"
+    },
+    "bin": {
+	"imessages": "./index.js"
+    },
+    "yargs": {
+	"parse-numbers": false
+    },
+    "volta": {
+	"node": "18.7.0"
+    }
 }
