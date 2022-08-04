@@ -3,6 +3,7 @@
 	"version": "2.0.1",
 	"description": "extract chats from imessage",
 	"main": "index.js",
+	"type": "module",
 	"scripts": {
 		"start": "./index.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
@@ -23,18 +24,15 @@
 	"author": "chee <yay@chee.party>",
 	"license": "GPL-3.0+",
 	"dependencies": {
-		"esm": "*",
-		"knex": "^0.16.3",
-		"sqlite3": "^4.0.6",
+		"knex": "^2.2.0",
+		"sqlite3": "^5.0.11",
 		"yargs": "^12.0.5"
 	},
-	"directories": {
-		"bin": "./bin"
-	},
+	"bin": "./index.js",
 	"yargs": {
 		"parse-numbers": false
 	},
 	"volta": {
-		"node": "12.22.12"
+		"node": "14.20.0"
 	}
 }

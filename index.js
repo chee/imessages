@@ -1,4 +1,4 @@
-#!/usr/bin/env -S node -r esm
+#!/usr/bin/env node
 import Knex from "knex"
 import yargs from "yargs"
 
@@ -90,8 +90,8 @@ yargs
 			await knex(argv.database)
 				.select("*")
 				.from("handle")
-				.map(getId)
-				.then(handles => handles.forEach(handle => process.stdout.write(handle + "\n")))
+
+				.then(handles => handles.forEach(handle => process.stdout.write(handle.id + "\n")))
 			process.exit()
 		}
 	})
