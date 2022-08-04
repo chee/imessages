@@ -1,6 +1,4 @@
 #!/usr/bin/env -S node -r esm
-import {homedir} from "os"
-import path from "path"
 import Knex from "knex"
 import yargs from "yargs"
 
@@ -10,41 +8,49 @@ let applepoch = new Date("2001-01-01").getTime()
 // they save their dates in microseconds since that epoch, so we add their
 // epoch to the date and divide it by a million to make it like a unix date,
 // which is the number of seconds since 1970-01-01
-let convertAppleDateToIsoDate = date =>
-	new Date(applepoch + date / 1000000).toISOString()
-
-// The file is always in the same place, and while it would be good to be able
-// to take another database other than the live one (one you’ve backed up, or
-let databasePath = path.resolve(
-	homedir(),
-	"Library",
-	"Messages",
-	"chat.db"
-)
-
-let knex = Knex({
-	client: "sqlite3",
-	useNullAsDefault: true,
-	connection: {
-		filename: databasePath
-	}
-})
+let convertAppleDateToIsoDate = date => {
+	return new Date(applepoch + date / 1000000).toISOString()
+}
 
 let get = field => item => item[field]
 
 let getId = get("id")
 
+function getKnex() {
+	let knex
+	return function (filename) {
+		if (!knex) {
+			knex = Knex({
+				client: "sqlite3",
+				useNullAsDefault: true,
+				connection: {
+					filename
+				}
+			})
+		}
+		return knex
+	}
+}
+
+let knex = getKnex()
+
 yargs
 	.command({
-		command: "extract <handle> [name] [me]",
+		command: "extract <database> <handle> [name] [me]",
 		describe: "extract messages for a handle",
-		// aliases: ["$0"],
 		builder (yargs) {
 			return yargs
 				.positional(
+					"database",
+					{
+						describe: "chat.db (found at ~/Library/Messages/chat.db)",
+						type: "string"
+					}
+				)
+				.positional(
 					"handle",
 					{
-						describe: "the handle whümfs messages to extract",
+						describe: "the handle whose messages to extract (see list-handles)",
 						type: "string"
 					}
 				)
@@ -67,15 +73,25 @@ yargs
 		handler: extract
 	})
 	.command({
-		command: "list-handles",
+		command: "list-handles <database>",
 		aliases: ["handles"],
 		describe: "list handles (like, contacts) from the database",
-		async handler () {
-			await knex
+		builder (yargs) {
+			return yargs
+				.positional(
+					"database",
+					{
+						describe: "chat.db (found at ~/Library/Messages/chat.db)",
+						type: "string"
+					}
+				)
+		},
+		async handler (argv) {
+			await knex(argv.database)
 				.select("*")
 				.from("handle")
 				.map(getId)
-				.then(handles => handles.forEach(handle => console.info(handle)))
+				.then(handles => handles.forEach(handle => process.stdout.write(handle + "\n")))
 			process.exit()
 		}
 	})
@@ -87,7 +103,7 @@ yargs
 async function extract (argv) {
 	let handle = argv.handle.trim()
 
-	let messages = await knex
+	let messages = await knex(argv.database)
 		.select([
 			"text",
 			"is_from_me",
@@ -97,7 +113,7 @@ async function extract (argv) {
 		.from("message")
 		.whereIn(
 			"handle_id",
-			knex
+			knex(argv.database)
 				.select("ROWID")
 				.from("handle")
 				.where({
@@ -117,6 +133,6 @@ async function extract (argv) {
 
 		})
 
-	console.info(JSON.stringify(messages, 0, "\t"))
+	process.stdout.write(JSON.stringify(messages, 0, "\t") + "\n")
 	process.exit()
 }
