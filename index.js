@@ -12,16 +12,12 @@ let convertAppleDateToIsoDate = date => {
 	return new Date(applepoch + date / 1000000).toISOString()
 }
 
-let get = field => item => item[field]
-
-let getId = get("id")
-
 function getKnex() {
 	let knex
 	return function (filename) {
 		if (!knex) {
 			knex = Knex({
-				client: "sqlite3",
+				client: "better-sqlite3",
 				useNullAsDefault: true,
 				connection: {
 					filename
@@ -38,7 +34,7 @@ yargs
 	.command({
 		command: "extract <database> <handle> [name] [me]",
 		describe: "extract messages for a handle",
-		builder (yargs) {
+		builder(yargs) {
 			return yargs
 				.positional(
 					"database",
@@ -50,7 +46,8 @@ yargs
 				.positional(
 					"handle",
 					{
-						describe: "the handle whose messages to extract (see list-handles)",
+						describe:
+							"the handle whose messages to extract (see list-handles)",
 						type: "string"
 					}
 				)
@@ -76,7 +73,7 @@ yargs
 		command: "list-handles <database>",
 		aliases: ["handles"],
 		describe: "list handles (like, contacts) from the database",
-		builder (yargs) {
+		builder(yargs) {
 			return yargs
 				.positional(
 					"database",
@@ -86,13 +83,14 @@ yargs
 					}
 				)
 		},
-		async handler (argv) {
+		async handler(argv) {
 			await knex(argv.database)
 				.select("*")
 				.from("handle")
-
-				.then(handles => handles.forEach(handle => process.stdout.write(handle.id + "\n")))
-			process.exit()
+				.then(handles =>
+					handles.forEach(handle =>
+						process.stdout.write(handle.id + "\n")))
+			process.exit(0)
 		}
 	})
 	.demandCommand(1, "you gotta chose a command")
@@ -100,7 +98,7 @@ yargs
 	.wrap(yargs.terminalWidth())
 	.argv
 
-async function extract (argv) {
+async function extract(argv) {
 	let handle = argv.handle.trim()
 
 	let messages = await knex(argv.database)
@@ -134,5 +132,5 @@ async function extract (argv) {
 		})
 
 	process.stdout.write(JSON.stringify(messages, 0, "\t") + "\n")
-	process.exit()
+	process.exit(0)
 }

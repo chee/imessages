@@ -5,11 +5,10 @@
 	"main": "index.js",
 	"type": "module",
 	"scripts": {
-		"start": "./index.js",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"start": "./index.js"
 	},
 	"engines": {
-		"node": "12"
+		"node": "18"
 	},
 	"keywords": [
 		"imessage",
@@ -24,15 +23,17 @@
 	"author": "chee <yay@chee.party>",
 	"license": "GPL-3.0+",
 	"dependencies": {
+		"better-sqlite3": "^7.6.2",
 		"knex": "^2.2.0",
-		"sqlite3": "^5.0.11",
 		"yargs": "^12.0.5"
 	},
-	"bin": "./index.js",
+	"bin": {
+		"imessages": "./index.js"
+	},
 	"yargs": {
 		"parse-numbers": false
 	},
 	"volta": {
-		"node": "14.20.0"
+		"node": "18.7.0"
 	}
 }
