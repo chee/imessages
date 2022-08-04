@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import Knex from "knex"
-import yargs from "yargs"
+import Yargs from "yargs"
+import {hideBin} from "yargs/helpers"
 
 // apple have made their own epoch, the first of jan 2001
 let applepoch = new Date("2001-01-01").getTime()
@@ -29,6 +30,8 @@ function getKnex() {
 }
 
 let knex = getKnex()
+
+let yargs = Yargs(hideBin(process.argv))
 
 yargs
 	.command({
